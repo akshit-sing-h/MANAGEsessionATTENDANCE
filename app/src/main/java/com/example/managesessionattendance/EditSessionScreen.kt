@@ -19,9 +19,18 @@ fun EditSessionScreen(sessionId: Int, viewModel: SessionViewModel, navController
     val sessions by viewModel.sessions.collectAsState(initial = emptyList())
     val session = sessions.find { it.id == sessionId }
 
-    var title by remember { mutableStateOf(session?.title ?: "") }
-    var date by remember { mutableStateOf(session?.date ?: "") }
-    var facilitator by remember { mutableStateOf(session?.facilitator ?: "") }
+    var title by remember { mutableStateOf("") }
+    var date by remember { mutableStateOf("") }
+    var facilitator by remember { mutableStateOf("") }
+
+    // Ensure values update when session loads
+    LaunchedEffect(session) {
+        if (session != null) {
+            title = session.title
+            date = session.date
+            facilitator = session.facilitator
+        }
+    }
 
     if (session == null) {
         Text("Session not found!")
@@ -36,7 +45,7 @@ fun EditSessionScreen(sessionId: Int, viewModel: SessionViewModel, navController
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            viewModel.updateSession(session.copy(id = session.id, title = title, date = date, facilitator = facilitator))
+            viewModel.updateSession(session.copy(title = title, date = date, facilitator = facilitator))
             navController.popBackStack()
         }) {
             Text("Save Changes")

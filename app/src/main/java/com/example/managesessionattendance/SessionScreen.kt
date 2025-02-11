@@ -20,82 +20,48 @@ fun SessionScreen(viewModel: SessionViewModel, navController: NavHostController)
     var title by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
     var facilitator by remember { mutableStateOf("") }
-    var studentName by remember { mutableStateOf("") }
-    var selectedSessionId by remember { mutableStateOf<Int?>(null) }
 
-    // Collect the sessions from the ViewModel
     val sessions = viewModel.sessions.collectAsState(initial = emptyList()).value
 
     Column(modifier = Modifier.padding(16.dp)) {
-        // If no session is selected, show the session creation UI
-        if (selectedSessionId == null) {
-            TextField(value = title, onValueChange = { title = it }, label = { Text("Title") })
-            TextField(value = date, onValueChange = { date = it }, label = { Text("Date") })
-            TextField(value = facilitator, onValueChange = { facilitator = it }, label = { Text("Facilitator") })
+        TextField(value = title, onValueChange = { title = it }, label = { Text("Title") })
+        TextField(value = date, onValueChange = { date = it }, label = { Text("Date") })
+        TextField(value = facilitator, onValueChange = { facilitator = it }, label = { Text("Facilitator") })
 
-            Button(onClick = {
-                viewModel.addSession(title, date, facilitator)
-                title = ""
-                date = ""
-                facilitator = ""
-            }) {
-                Text("Add Session")
-            }
+        Button(onClick = {
+            viewModel.addSession(title, date, facilitator)
+            title = ""
+            date = ""
+            facilitator = ""
+        }) {
+            Text("Add Session")
+        }
 
-            Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-            // Display list of sessions
-            LazyColumn {
-                items(sessions) { session ->
-                    Column(modifier = Modifier.padding(8.dp)) {
-                        Text(text = "${session.title} - ${session.date}")
-
-                        // "Mark Attendance" button
-                        Button(onClick = { selectedSessionId = session.id }) {
-                            Text("Mark Attendance")
-                        }
-                    }
-                }
-            }
-        } else {
-            // Attendance marking UI
-            Column {
-                Text("Mark Attendance for Session ID: $selectedSessionId")
-                TextField(value = studentName, onValueChange = { studentName = it }, label = { Text("Student Name") })
-
-                Row {
-                    Button(onClick = {
-                        viewModel.markAttendance(selectedSessionId!!, studentName, true)
-                        studentName = "" // Reset input
-                    }) {
-                        Text("Present")
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = {
-                        viewModel.markAttendance(selectedSessionId!!, studentName, false)
-                        studentName = "" // Reset input
-                    }) {
-                        Text("Absent")
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                // "Done" button to reset back to session creation
-                Button(onClick = {
-                    selectedSessionId = null  // Reset selection
-                    studentName = ""         // Clear student name input
-                }) {
-                    Text("Done")
+        LazyColumn {
+            items(sessions) { session->
+                Column(modifier = Modifier.padding(8.dp)) {
+                    Text(text = "${session.title} - date${session.date} - session id: ${session.id}")
                 }
             }
         }
 
+        // Navigate to the Mark Attendance Screen
+        Button(onClick = { navController.navigate("mark_attendance") }) {
+            Text(text = "Take Attendance")
+        }
+        //navigate to the attendance change screen
         Button(onClick = { navController.navigate("session_detail") }) {
-            Text(text = "Go to Session Detail")
+            Text(text = "Make changes in attendandce sheet")
         }
+        Button(onClick = { navController.navigate("manage_sessions") }) {
+            Text("Manage Sessions")
+        }
+
     }
 }
+
 
 
 

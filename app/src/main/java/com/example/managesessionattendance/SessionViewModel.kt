@@ -21,6 +21,23 @@ class SessionViewModel(private val repository: AppRepository) : ViewModel() {
         }
     }
 
+    fun searchSessions(query: String): Flow<List<Session>> {
+        return repository.searchSessions(query)
+    }
+
+    fun updateSession(session: Session) {
+        viewModelScope.launch {
+            println("Updating session with ID: ${session.id}") // Debugging
+            repository.updateSession(session)
+        }
+    }
+
+
+    fun deleteSession(session: Session) {
+        viewModelScope.launch {
+            repository.deleteSession(session)
+        }
+    }
 
 
     fun markAttendance(sessionId: Int, studentName: String, isPresent: Boolean) {

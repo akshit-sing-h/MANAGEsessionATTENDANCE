@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.managesessionattendance.ui.theme.ManageSESSIONattendanceTheme
 
 class MainActivity : ComponentActivity() {
@@ -51,6 +53,16 @@ fun SessionApp(viewModel: SessionViewModel) {
             composable("session_detail") {
                 SessionDetailScreen(viewModel)
             }
+            composable("mark_attendance") { MarkAttendanceScreen(viewModel,navController) }
+            composable("manage_sessions") { ManageSessionsScreen(viewModel,navController) }
+            composable(
+                "edit_session/{sessionId}",
+                arguments = listOf(navArgument("sessionId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val sessionId = backStackEntry.arguments?.getInt("sessionId") ?: 0
+                EditSessionScreen(sessionId,viewModel,navController)
+            }
         }
+
     }
 }

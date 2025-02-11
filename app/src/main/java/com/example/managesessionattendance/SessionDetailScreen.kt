@@ -22,9 +22,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 
 @Composable
-fun SessionDetailScreen(viewModel: SessionViewModel) {
+fun SessionDetailScreen(viewModel: SessionViewModel,navController: NavHostController) {
     var sessionId by remember { mutableStateOf("") }
     var showAttendance by remember { mutableStateOf(false) }
     var currentSessionId by remember { mutableStateOf<Int?>(null) } // Stores the last session ID searched
@@ -105,7 +106,11 @@ fun SessionDetailScreen(viewModel: SessionViewModel) {
             } else {
                 Text("Please enter a valid Session ID.")
             }
+            Button(onClick = { navController.popBackStack() }) {
+                Text("Back to Sessions")
+            }
         }
+
     }
 }
 

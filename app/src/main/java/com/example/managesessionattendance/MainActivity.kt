@@ -51,7 +51,7 @@ fun SessionApp(viewModel: SessionViewModel) {
 
             // Session Detail screen without requiring a sessionId initially
             composable("session_detail") {
-                SessionDetailScreen(viewModel)
+                SessionDetailScreen(viewModel,navController)
             }
             composable("mark_attendance") { MarkAttendanceScreen(viewModel,navController) }
             composable("manage_sessions") { ManageSessionsScreen(viewModel,navController) }

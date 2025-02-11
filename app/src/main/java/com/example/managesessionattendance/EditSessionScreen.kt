@@ -50,5 +50,6 @@ fun EditSessionScreen(sessionId: Int, viewModel: SessionViewModel, navController
         }) {
             Text("Save Changes")
         }
+
     }
 }

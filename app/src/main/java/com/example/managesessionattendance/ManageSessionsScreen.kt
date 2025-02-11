@@ -60,6 +60,11 @@ fun ManageSessionsScreen(viewModel: SessionViewModel, navController: NavHostCont
                     }
                 }
             }
+
         }
+        Button(onClick = { navController.popBackStack() }) {
+            Text("Back to Sessions")
+        }
+
     }
 }
